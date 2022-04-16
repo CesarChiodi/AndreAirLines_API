@@ -19,8 +19,6 @@ namespace AndreAirLines_API.Model
         [JsonProperty("Email")]
         public string Email { get; set; }
         [JsonProperty("Endereco")]
-        //[ForeignKey("IdEndereco")]
-        //public int IdEndereco { get; set; }
         public virtual Endereco Endereco { get; set; }
     }
 }

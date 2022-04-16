@@ -4,14 +4,16 @@ using AndreAirLines_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AndreAirLines_API.Migrations
 {
     [DbContext(typeof(AndreAirLines_APIContext))]
-    partial class AndreAirLines_APIContextModelSnapshot : ModelSnapshot
+    [Migration("20220402221018_FourthOne")]
+    partial class FourthOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,7 @@ namespace AndreAirLines_API.Migrations
                     b.Property<int?>("EnderecoAeroportoIdEndereco")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("IdAeronave")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Sigla");
@@ -62,9 +64,6 @@ namespace AndreAirLines_API.Migrations
 
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Valor")
-                        .HasColumnType("float");
 
                     b.HasKey("IdClasse");
 
@@ -150,11 +149,8 @@ namespace AndreAirLines_API.Migrations
                     b.Property<string>("PassageiroCpf")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("PrecoBaseIdPrecoBase")
+                    b.Property<int?>("ValorIdPrecoBase")
                         .HasColumnType("int");
-
-                    b.Property<double>("ValorPassagem")
-                        .HasColumnType("float");
 
                     b.Property<int?>("VooIdVoo")
                         .HasColumnType("int");
@@ -165,7 +161,7 @@ namespace AndreAirLines_API.Migrations
 
                     b.HasIndex("PassageiroCpf");
 
-                    b.HasIndex("PrecoBaseIdPrecoBase");
+                    b.HasIndex("ValorIdPrecoBase");
 
                     b.HasIndex("VooIdVoo");
 
@@ -179,6 +175,9 @@ namespace AndreAirLines_API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ClasseIdClasse")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DataInclusao")
                         .HasColumnType("datetime2");
 
@@ -191,10 +190,12 @@ namespace AndreAirLines_API.Migrations
                     b.Property<double>("PromocaoPorcentagem")
                         .HasColumnType("float");
 
-                    b.Property<double>("Valor")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdPrecoBase");
+
+                    b.HasIndex("ClasseIdClasse");
 
                     b.HasIndex("DestinoSigla");
 
@@ -264,9 +265,9 @@ namespace AndreAirLines_API.Migrations
                         .WithMany()
                         .HasForeignKey("PassageiroCpf");
 
-                    b.HasOne("AndreAirLines_API.Model.PrecoBase", "PrecoBase")
+                    b.HasOne("AndreAirLines_API.Model.PrecoBase", "Valor")
                         .WithMany()
-                        .HasForeignKey("PrecoBaseIdPrecoBase");
+                        .HasForeignKey("ValorIdPrecoBase");
 
                     b.HasOne("AndreAirLines_API.Model.Voo", "Voo")
                         .WithMany()
@@ -276,13 +277,17 @@ namespace AndreAirLines_API.Migrations
 
                     b.Navigation("Passageiro");
 
-                    b.Navigation("PrecoBase");
+                    b.Navigation("Valor");
 
                     b.Navigation("Voo");
                 });
 
             modelBuilder.Entity("AndreAirLines_API.Model.PrecoBase", b =>
                 {
+                    b.HasOne("AndreAirLines_API.Model.Classe", "Classe")
+                        .WithMany()
+                        .HasForeignKey("ClasseIdClasse");
+
                     b.HasOne("AndreAirLines_API.Model.Aeroporto", "Destino")
                         .WithMany()
                         .HasForeignKey("DestinoSigla");
@@ -290,6 +295,8 @@ namespace AndreAirLines_API.Migrations
                     b.HasOne("AndreAirLines_API.Model.Aeroporto", "Origem")
                         .WithMany()
                         .HasForeignKey("OrigemSigla");
+
+                    b.Navigation("Classe");
 
                     b.Navigation("Destino");
 

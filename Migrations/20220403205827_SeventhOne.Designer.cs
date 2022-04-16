@@ -4,14 +4,16 @@ using AndreAirLines_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AndreAirLines_API.Migrations
 {
     [DbContext(typeof(AndreAirLines_APIContext))]
-    partial class AndreAirLines_APIContextModelSnapshot : ModelSnapshot
+    [Migration("20220403205827_SeventhOne")]
+    partial class SeventhOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,10 @@ namespace AndreAirLines_API.Migrations
                     b.Property<int?>("PrecoBaseIdPrecoBase")
                         .HasColumnType("int");
 
-                    b.Property<double>("ValorPassagem")
+                    b.Property<int?>("PromocaoPorcentagemIdPrecoBase")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Valor")
                         .HasColumnType("float");
 
                     b.Property<int?>("VooIdVoo")
@@ -166,6 +171,8 @@ namespace AndreAirLines_API.Migrations
                     b.HasIndex("PassageiroCpf");
 
                     b.HasIndex("PrecoBaseIdPrecoBase");
+
+                    b.HasIndex("PromocaoPorcentagemIdPrecoBase");
 
                     b.HasIndex("VooIdVoo");
 
@@ -268,6 +275,10 @@ namespace AndreAirLines_API.Migrations
                         .WithMany()
                         .HasForeignKey("PrecoBaseIdPrecoBase");
 
+                    b.HasOne("AndreAirLines_API.Model.PrecoBase", "PromocaoPorcentagem")
+                        .WithMany()
+                        .HasForeignKey("PromocaoPorcentagemIdPrecoBase");
+
                     b.HasOne("AndreAirLines_API.Model.Voo", "Voo")
                         .WithMany()
                         .HasForeignKey("VooIdVoo");
@@ -277,6 +288,8 @@ namespace AndreAirLines_API.Migrations
                     b.Navigation("Passageiro");
 
                     b.Navigation("PrecoBase");
+
+                    b.Navigation("PromocaoPorcentagem");
 
                     b.Navigation("Voo");
                 });

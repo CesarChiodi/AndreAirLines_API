@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AndreAirLines_API.Data;
 using AndreAirLines_API.Model;
+using AndreAirLines_API.InsertCorreioApi;
 
 namespace AndreAirLines_API.Controllers
 {
@@ -78,6 +79,8 @@ namespace AndreAirLines_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Endereco>> PostEndereco(Endereco endereco)
         {
+            var enderecoViacep = await CorreioApi.ViacepJsonAsync(endereco.Cep);
+            endereco = new Endereco(enderecoViacep.IdEndereco, enderecoViacep.Bairro, enderecoViacep.Cidade, enderecoViacep.Pais, enderecoViacep.Cep, enderecoViacep.Logradouro, enderecoViacep.Estado, enderecoViacep.Numero, enderecoViacep.Complemento);
 
             _context.Endereco.Add(endereco);
             await _context.SaveChangesAsync();

@@ -9,11 +9,9 @@ namespace AndreAirLines_API.Model
         [JsonProperty("Sigla")]
         [Key]
         public string Sigla { get; set; }
-        [JsonProperty("IdAeronave")]
-        public string IdAeronave { get; set; }
+        [JsonProperty("Nome")]
+        public string Nome { get; set; }
         [JsonProperty("EnderecoAeroporto")]
-        //[ForeignKey("IdEndereco")]
-        //public int IdEndereco { get; set; }
         public virtual Endereco EnderecoAeroporto { get; set; }
     }
 }

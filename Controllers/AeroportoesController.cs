@@ -34,7 +34,7 @@ namespace AndreAirLines_API.Controllers
         public async Task<ActionResult<Aeroporto>> GetAeroporto(string id)
         {
             var aeroporto = await _context.Aeroporto.Include(endereco => endereco.EnderecoAeroporto)
-                                                      .Where(aeroporto => aeroporto.Sigla == id).FirstOrDefaultAsync();
+                                                    .Where(aeroporto => aeroporto.Sigla == id).FirstOrDefaultAsync();
 
             if (aeroporto == null)
             {
@@ -43,7 +43,7 @@ namespace AndreAirLines_API.Controllers
 
             return aeroporto;
         }
-
+        
         // PUT: api/Aeroportoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

@@ -24,6 +24,12 @@ namespace AndreAirLines_API.Data
 
         public DbSet<AndreAirLines_API.Model.Voo> Voo { get; set; }
 
+        public DbSet<AndreAirLines_API.Model.Classe> Classe { get; set; }
+
+        public DbSet<AndreAirLines_API.Model.Passagem> Passagem { get; set; }
+
+        public DbSet<AndreAirLines_API.Model.PrecoBase> PrecoBase { get; set; }
+
 
     }
 }

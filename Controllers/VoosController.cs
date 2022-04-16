@@ -28,7 +28,8 @@ namespace AndreAirLines_API.Controllers
             return await _context.Voo.Include(destino => destino.Destino)
                                      .Include(origem => origem.Origem)
                                      .Include(aeronave => aeronave.Aeronave)
-                                     .Include(passageiro => passageiro.Passageiro).ToListAsync();
+                                     .ToListAsync();
+            //.Include(passageiro => passageiro.Passageiro).
         }
 
         // GET: api/Voos/5
@@ -38,9 +39,9 @@ namespace AndreAirLines_API.Controllers
             var voo = await _context.Voo.Include(destino => destino.Destino)
                                         .Include(origem => origem.Origem)
                                         .Include(aeronave => aeronave.Aeronave)
-                                        .Include(passageiro => passageiro.Passageiro)
                                         .Where(idvoo => idvoo.IdVoo == id).FirstOrDefaultAsync();
-                                     //.Where(c => c.IdVoo == id).FirstOrDefaultAsync();
+            //.Include(passageiro => passageiro.Passageiro)
+
             if (voo == null)
             {
                 return NotFound();
@@ -85,7 +86,24 @@ namespace AndreAirLines_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Voo>> PostVoo(Voo voo)
         {
-            
+            var destino = await _context.Aeroporto.Where(aeroporto => aeroporto.Sigla == voo.Destino.Sigla).FirstOrDefaultAsync();
+            if (destino != null)
+            {
+                voo.Destino = destino;
+            }
+
+            var origin = await _context.Aeroporto.Where(aeroporto => aeroporto.Sigla == voo.Origem.Sigla).FirstOrDefaultAsync();
+            if (origin != null)
+            {
+                voo.Origem = origin;
+            }
+
+            var aircraft = await _context.Aeronave.Where(aeronave => aeronave.IdAeronave == voo.Aeronave.IdAeronave).FirstOrDefaultAsync();
+            if (aircraft != null)
+            {
+                voo.Aeronave = aircraft;
+            }
+
             _context.Voo.Add(voo);
             await _context.SaveChangesAsync();
 
